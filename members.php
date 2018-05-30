@@ -32,12 +32,17 @@ require 'includes/common.php';
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
-             $sel1="Select id,year from users where name='$nm'";
+             $sel1="Select id,year,image from users where name='$nm'";
              $selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
              $arr1=mysqli_fetch_array($selres1) or diemysqli_error($con);
              ?>
                    
                     <tr>
+                        <td>
+                         <?php 
+                         $img=$arr1['image'];
+                         echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
+                        </td>
                  <td>
                      <h4><a href="profile1.php?id=<?php echo $arr1[0] ; ?> "><?php echo $arr['name']; ?></a></h4></td>
                  
@@ -65,12 +70,17 @@ require 'includes/common.php';
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
-             $sel1="Select id,year from users where name='$nm'";
+             $sel1="Select id,year,image from users where name='$nm'";
              $selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
              $arr1=mysqli_fetch_array($selres1) or diemysqli_error($con);
              ?>
                    
                     <tr>
+                        <td>
+                         <?php 
+                         $img=$arr1['image'];
+                         echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
+                        </td>
                  <td>
                      <h4><a href="profile1.php?id=<?php echo $arr1[0] ; ?> "><?php echo $arr['name']; ?></a></h4></td>
                  
@@ -98,12 +108,17 @@ require 'includes/common.php';
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
-             $sel1="Select id,year from users where name='$nm'";
+             $sel1="Select id,year,image from users where name='$nm'";
              $selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
              $arr1=mysqli_fetch_array($selres1) or diemysqli_error($con);
              ?>
                    
                     <tr>
+                        <td>
+                         <?php 
+                         $img=$arr1['image'];
+                         echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
+                        </td>
                  <td>
                      <h4 ><a href="profile1.php?id=<?php echo $arr1[0] ; ?> "><?php echo $arr['name']; ?></a></h4></td>
                  
@@ -131,12 +146,17 @@ require 'includes/common.php';
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
-             $sel1="Select id,year from users where name='$nm'";
+             $sel1="Select id,year,image from users where name='$nm'";
              $selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
              $arr1=mysqli_fetch_array($selres1) or diemysqli_error($con);
              ?>
                    
                     <tr>
+                        <td>
+                         <?php 
+                         $img=$arr1['image'];
+                         echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
+                        </td>
                  <td>
                      <h4><a href="profile1.php?id=<?php echo $arr1[0] ; ?> "><?php echo $arr['name']; ?></a></h4></td>
                  

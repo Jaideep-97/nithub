@@ -5,6 +5,9 @@ $email = mysqli_real_escape_string($con, $_POST['email']);
 $name = mysqli_real_escape_string($con, $_POST['name']);
 $password = mysqli_real_escape_string($con, $_POST['password']);
 $year = mysqli_real_escape_string($con, $_POST['year']);
+$club= mysqli_real_escape_string($con, $_POST['clubs']);
+$branch = mysqli_real_escape_string($con, $_POST['branch']);
+$about = mysqli_real_escape_string($con, $_POST['aboutme']);
 $select_query="Select id from users where email='$email'";
 $select_query_res=mysqli_query($con,$select_query) or die(mysqli_error($con));
 $no_of_rows=mysqli_num_rows($select_query_res);
@@ -14,7 +17,7 @@ if($no_of_rows>0)
 }
 else
 {
-    $insert="Insert into users(email,name,password,year) values ('$email','$name','$password','$year')";
+    $insert="Insert into users(email,name,password,year,club,branch,about) values ('$email','$name','$password','$year','$club','$branch','$about')";
     $registered=mysqli_query($con,$insert) or die(mysqli_error($con));
     echo "user successfully registered";
     $id= mysqli_insert_id($con);
@@ -26,7 +29,7 @@ else
     
      if(isset($_SESSION['email']))
 {
-     header('Location:index.php');
+     header('Location:profile.php');
 }
 }
 

@@ -66,7 +66,7 @@ require 'includes/common.php';
 $uid=$_SESSION['id'];
 if(isset($_SESSION['id'])){
 $friendid=$_GET['id'];}
-$sel1="Select name from users where id='$friendid'";
+$sel1="Select name,image from users where id='$friendid'";
 $selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
 $arr1=mysqli_fetch_array($selres1);
 ?>
@@ -79,25 +79,43 @@ while($arr=mysqli_fetch_array($selres)){
 
 if($arr['from_id']==$uid){
 ?>    
-<div class="container">
-
-  <h3 style="color:#3498DB; font-size: 1.2em"><b>YOU</b></h3>
-  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em;"><?php echo $arr['message']; ?></p>
-  <span id="time-right"><?php echo $arr['time']; ?></span>
+    <div class="container" style="background-color:#CB4335 ;">
+<span id='time-right'>
+                      <?php
+              $userid=$_SESSION['id'];
+              $se1="Select image from users where id='$userid'";
+$selre1= mysqli_query($con, $se1) or diemysqli_error($con);
+$ar1= mysqli_fetch_array($selre1);
+$image_path=$ar1['image'];
+echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> "
+                ?>
+                        
+  <h3 style="color:#F1C40F; font-size: 1.2em; "><b>YOU</b></h3>
+  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em; color:black;"><?php echo $arr['message']; ?></p>
+</span>
+        <span id="time-right" style="color:black;"><?php echo $arr['time']; ?></span>
 </div>
 <?php } else {
-?><div class="container darker">
+    ?><div class="container darker" style="background-color: #F1C40F;">
+    <span id='time-left'>
+    <?php
+    $image_path1=$arr1[1];
+echo "<img src='$image_path1' height='50px' width='50px' class='img-circle' ; /> "
+    ?>
+    
   
   <h3 style="color:#E74C3C; font-size: 1.2em;"><b><?php echo $arr1[0]; ?></b></h3>
-   <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em;"><?php echo $arr['message']; ?></p>
-  <span id="time-right"><?php echo $arr['time']; ?></span>
+  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em;color:black;"><?php echo $arr['message']; ?></p></span>
+  <span id="time-left" style='color:black;'><?php echo $arr['time']; ?></span>
 </div>
 <?php } } ?>
 <form class="form-group" method="POST" action="message_script.php?id=<?php echo $friendid; ?>">
     <input type="textarea" placeholder="Type your message here!" name="message" class="form-control" />
     <br />
-    <input type="submit" class="btn btn-warning" value="Send" />
+    <input type="submit" class="btn btn-danger" value="Send" />
+    
 </form>
+
 </div>
 </body>
 </html>

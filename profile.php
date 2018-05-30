@@ -38,20 +38,34 @@ require 'includes/common.php';
                 ?>
                 <h3 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:2em; color: #F1C40F;"><?php echo $arr[2]; ?></h3>
               <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;"><?php echo $arr[1]; ?></h4>
-              <img src='IMG1.jpg' class="img-circle" width='200px' height='200px' />
+             
+              <form action="upload-handle.php" method="post" enctype="multipart/form-data">
+                  <input type="file" name="file" value='Choose file:' class="btn btn-danger">
+                  <br />
+                  <input type="submit" name="submit" value="Upload" class="btn btn-danger">
+</form>
+              <?php
+              $userid=$_SESSION['id'];
+              $sel1="Select image from users where id='$userid'";
+$selres1= mysqli_query($con, $sel1) or diemysqli_error($con);
+$arr1= mysqli_fetch_array($selres1);
+$image_path=$arr1['image'];
+echo "<img src='$image_path' height='200px' width='200px' class='img-circle' ; /> "
+                ?>
               <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Year:<?php echo $arr[4]; ?></h4>
               <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Clubs:<?php echo $arr[6]; ?></h4>
               <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Branch:<?php echo $arr[7]; ?></h4>
               <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">About:<?php echo $arr[8]; ?></h4>
+              
             </div>
-            <div class="col-md-7" >
+            <div class="col-md-7" style="background-color:#D7DBDD;" >
                 <h4 style="text-align: center;">
-                    <b style="font-family:Lucida Console, Monaco, monospace; font-size: 1.5em;color: #F1C40F;">  POST YOUR STORY</b>
+                    <b style="font-family:Lucida Console, Monaco, monospace; font-size: 1.5em;color: #CB4335;">  POST YOUR STORY</b>
                 </h4>  
                 <form class="form-group" method="POST" action="post.php">
                     <input type="textarea" name="text" placeholder="Write your post here" class="form-control" />
                     <br />
-                    <input class="btn btn-primary" value="POST" type="submit" />
+                    <input class="btn btn-danger" value="POST" type="submit" />
                 </form>
                 <?php
                 $uid=$_SESSION['id'];
@@ -63,7 +77,15 @@ require 'includes/common.php';
                     $postid=$row['id'];
                     ?>
                 <article>
-                <h3 style="font-family: Verdana, Geneva, sans-serif; font-size: 1.2em; color: red;"><b><?php $sel1="Select * from users where id='$uid'";
+                     <?php
+              $userid=$_SESSION['id'];
+              $sel1="Select image from users where id='$userid'";
+$selres1= mysqli_query($con, $sel1) or diemysqli_error($con);
+$arr1= mysqli_fetch_array($selres1);
+$image_path=$arr1['image'];
+echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> "
+                ?>
+                <h3 style="font-family: Verdana, Geneva, sans-serif; font-size: 1.2em; color: #CB4335;"><b><?php $sel1="Select * from users where id='$uid'";
                 $selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
                 $arr=mysqli_fetch_array($selres1);
                 echo $arr[2]; ?></b>
@@ -72,7 +94,7 @@ require 'includes/common.php';
                 <h4 style="color:blue;"><?php echo $row[4]; ?></h4>
                 <br />
                 <br />
-                <p style="font-family: Trebuchet MS, Helvetica, sans-serif; font-size: 1.6em; color:#2ECC71;"><?php echo $row[2]; ?></p>
+                <p style="font-family: Trebuchet MS, Helvetica, sans-serif; font-size: 1.6em; color:black;"><?php echo $row[2]; ?></p>
                 <br />
                 
                 <input type='button' class="btn btn-danger" onclick="location.href='delete.php?id=<?php echo $postid; ?>'" value='DELETE POST'/>
@@ -87,17 +109,27 @@ require 'includes/common.php';
                 $sel3="Select time, comment from users_posts where users_posts.post_id='$postid' order by time desc";
                  $selres3=mysqli_query($con,$sel3) or diemysqli_error($con);
                  while($arr3=mysqli_fetch_array($selres3)){
-                $sel2="Select name from users inner join users_posts on users.id=users_posts.user_id and users_posts.post_id='$postid' order by time asc";
+                $sel2="Select name,image from users inner join users_posts on users.id=users_posts.user_id and users_posts.post_id='$postid' order by time asc";
                  $selres2=mysqli_query($con,$sel2) or diemysqli_error($con);
                  $arr2=mysqli_fetch_array($selres2);
                 ?>
                 <div style="border: 1px solid;">
-                <h4 style='color:red;'><?php echo $arr2[0]; ?></h4>
+                    <br />
+                 <?php
+              $userid=$_SESSION['id'];
+              $sel1="Select image from users where id='$userid'";
+$selres1= mysqli_query($con, $sel1) or diemysqli_error($con);
+$arr1= mysqli_fetch_array($selres1);
+$image_path=$arr2['image'];
+echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> "
+                ?>
+                
+                <h4 style='color:#CB4335;;'><?php echo $arr2[0]; ?></h4>
                 <?php 
                 
                  ?>
                 <h4 style="color:blue; "><?php echo $arr3[0]; ?></h4>
-                <p style="font-family: Trebuchet MS, Helvetica, sans-serif; font-size: 1.6em; color:#2ECC71;"><?php echo $arr3[1]; ?></p>
+                <p style="font-family: Trebuchet MS, Helvetica, sans-serif; font-size: 1.6em; color:black;"><?php echo $arr3[1]; ?></p>
                 <hr />
                 </div>
                  <?php } ?>
@@ -115,7 +147,7 @@ require 'includes/common.php';
                 $uid=$_SESSION['id'];
                 $on="Online";
                 $off="Offline";
-                $sel="Select name, year,status from users inner join users_friends on users.id=users_friends.friend_id  where users_friends.user_id='$uid'";
+                $sel="Select name, year,status,image from users inner join users_friends on users.id=users_friends.friend_id  where users_friends.user_id='$uid'";
                 $selres=mysqli_query($con,$sel) or diemysqli_error($con);
                 ?>
                 <table class="table ">
@@ -123,6 +155,11 @@ require 'includes/common.php';
                 while ($arr= mysqli_fetch_array($selres)){
                 ?>
                     <tr>
+                        <td>
+                         <?php 
+                         $img=$arr['image'];
+                         echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
+                        </td>
                         <td   >
                             <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $arr[0]; ?></h3>
                         </td>
@@ -141,7 +178,7 @@ require 'includes/common.php';
                 </table>
                 <?php
                 $uid=$_SESSION['id'];
-                $sel="Select name, year,status from users inner join users_friends on users.id=users_friends.user_id  where users_friends.friend_id='$uid'";
+                $sel="Select name, year,status,image from users inner join users_friends on users.id=users_friends.user_id  where users_friends.friend_id='$uid'";
                 $selres=mysqli_query($con,$sel) or diemysqli_error($con);
                 ?>
                 
@@ -150,6 +187,11 @@ require 'includes/common.php';
                 while ($arr= mysqli_fetch_array($selres)){
                 ?>
                     <tr>
+                        <td>
+                         <?php 
+                         $img=$arr['image'];
+                         echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
+                        </td>
                         <td >
                             <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $arr[0]; ?></h3>
                         </td>
