@@ -3,7 +3,7 @@
 
 function check_if_added($friend_id)
 {
-    $con = mysqli_connect("localhost", "root", "", "social") or die(mysqli_error($con));
+    $con = mysqli_connect("localhost", "connectf_jaideep", "Durgapur12", "connectf_social") or die(mysqli_error($con));
     $user_id= $_SESSION['id'];
     $select_query="Select * from users_friends where friend_id='$friend_id' and user_id='$user_id' or friend_id='$user_id' and user_id='$friend_id'";
     $select_query_res=mysqli_query($con,$select_query);

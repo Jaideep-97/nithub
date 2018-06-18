@@ -258,17 +258,20 @@ input {
 <body>
     <?php
     include 'includes/header.php';
+    
     ?>
     
-    <form class="sign-up" method="POST" action="signup_script.php" class="form-group">
+    <form class="sign-up" method="POST" action="<?php echo htmlspecialchars('signup_script.php'); ?>" class="form-group">
     <h1 class="sign-up-title">Sign up in seconds</h1>
-    <input type="text" class="sign-up-input" name="name" class="col-md-4" placeholder="What's your username?" autofocus>
-    <input type="text" class="sign-up-input" name="email" class="col-md-4" placeholder="What's your email?" autofocus>
-    <input type="password" class="sign-up-input" name="password" class="col-md-4" placeholder="Choose a password" >
-    <input type="text" class="sign-up-input" name="year" class="col-md-4" placeholder="What's your year?" >
-    <input type="text" class="sign-up-input" name="branch" class="col-md-4" placeholder="What's your branch?" >
-    <input type="text" class="sign-up-input" name="clubs" class="col-md-4" placeholder="Are you part of any clubs?" >
-    <input type="text" class="sign-up-input" name="aboutme" class="col-md-4" placeholder="Write something about yourself" >
+   
+    <input type="text" class="sign-up-input" name="name" id="name" class="col-md-4" placeholder="What's your username?*" required autofocus>
+   
+    <input type="text" class="sign-up-input" id="email" name="email" class="col-md-4" placeholder="What's your email?*" required autofocus>
+    <input type="password" class="sign-up-input" name="password" class="col-md-4" placeholder="Choose a password*" minlength="8"required >
+    <input type="text" class="sign-up-input" name="year" class="col-md-4" placeholder="What's your year?1/2/3/4*" required >
+    <input type="text" class="sign-up-input" name="branch" class="col-md-4" placeholder="What's your branch?*" required>
+    <input type="text" class="sign-up-input" name="clubs" class="col-md-4" placeholder="Are you part of any clubs?*" required >
+    <input type="text" class="sign-up-input" name="aboutme" class="col-md-4" placeholder="Write something about yourself*" required>
     <input type="submit" value="Sign me up!" class="sign-up-button">
   </form>
      

@@ -29,48 +29,83 @@ require 'includes/common.php';
             <div class="col-md-2" >
                 <h2 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;"> PROFILE</h2>
               <?php
-              $uid4=$_GET['id'];
-                $sel4="Select * from users where id='$uid4'";
-                $selres4=mysqli_query($con,$sel4) or diemysqli_error($con);
-                $arr= mysqli_fetch_array($selres4);
-                ?>
-                <h3 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:2em; color: #F1C40F;"><?php echo $arr[2]; ?></h3>
-              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;"><?php echo $arr[1]; ?></h4>
-          <?php    echo "<img src='$arr[9]' height='200px' width='200px' class='img-circle' ; /> " ?>
-              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Clubs:<?php echo $arr[6]; ?></h4>
-              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Branch:<?php echo $arr[7]; ?></h4>
-              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">About:<?php echo $arr[8]; ?></h4>
               
+  
+ 
+              $id=$_GET['id'];
+ 
+ 
+                $sel4="Select name,email,year,club,branch,about,image from users where id=?";
+                $stmt = $con->stmt_init();
+
+                if ($stmt->prepare($sel4)) {
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($name,$email,$year,$club,$branch,$about,$image);
+    $stmt->fetch();
+                
+                
+                ?>
+                <h3 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:2em; color: #F1C40F;"><?php echo $name; ?></h3>
+              
+          <?php    echo "<img src='$image' height='200px' width='200px' class='img-circle' ; /> " ?>
+              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Year:<?php echo $year; ?></h4>
+              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Club:<?php echo $club; ?></h4>
+              
+              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Branch:<?php echo $branch; ?></h4>
+              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">About:<?php echo $about; ?></h4>
                 
             </div>
             </section>
+                <?php }  ?>
             <div class="col-md-7" style="background-color:#D7DBDD;" >
                 <h4 style="text-align: center;">
                     <b style="font-family:Lucida Console, Monaco, monospace; font-size: 1.5em; color: #CB4335;">  POSTS</b>
                 </h4>  
                
                 <?php
-                $uid3=$_GET['id'];
-                $sel3="Select * from posts where userid='$uid3' order by time desc";
-                $selres3=mysqli_query($con,$sel3) or diemysqli_error($con);
-                while($row= mysqli_fetch_array($selres3))
+                
+                $id=$_GET['id'];
+ 
+ 
+                $stmt = $con->stmt_init();
+
+                
+                
+                
+                $sel3="Select message,time,id from posts where userid=? order by time desc";
+                if ($stmt->prepare($sel3)) {
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result($message,$time,$id1);
+    
+                }                while($stmt->fetch())
                         
                 {
-                    $postid=$row['id'];
+                    $postid=$id1;
                     ?>
                 <article>
-                    <?php $sel1="Select * from users where id='$uid3'";
-                $selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
-                $arr=mysqli_fetch_array($selres1);
-                    echo "<img src='$arr[9]' height='50px' width='50px' class='img-circle' ; /> " ?>
+                    <?php $sel1="Select name,image from users where id=?";
+                    $stmt1=$con->stmt_init();
+                    if ($stmt1->prepare($sel1)) {
+    $stmt1->bind_param("i", $id);
+    $stmt1->execute();
+                  
+                  $stmt1->store_result();
+                  $stmt1->bind_result($name,$image);
+                    }
+                $stmt1->fetch();
+                    echo "<img src='$image' height='50px' width='50px' class='img-circle' ; /> " ?>
                 <h3 style="font-family: Verdana, Geneva, sans-serif; font-size: 1.2em; color: #CB4335;"><b>
-             <?php   echo $arr[2]; ?></b>
+             <?php   echo $name; ?></b>
                     
                 </h3>
-                <h4 style="color:blue;"><?php echo $row['time']; ?></h4>
+                <h4 style="color:blue;"><?php echo $time; ?></h4>
                 <br />
                 <br />
-                <p style="font-family: Trebuchet MS, Helvetica, sans-serif; font-size: 1.6em; color:black;"><?php echo $row[2]; ?></p>
+                <p style="font-family: Trebuchet MS, Helvetica, sans-serif; font-size: 1.6em; color:black;"><?php echo $message; ?></p>
                 <br />
                 
                 <?php
@@ -95,64 +130,76 @@ require 'includes/common.php';
                 <p style="font-family: Trebuchet MS, Helvetica, sans-serif; font-size: 1.6em; color:black;"><?php echo $arr3['time']; ?></p>
                 <hr />
                 </div>
-                 <?php } ?>
+                 <?php break; } ?>
                 </article>
                <?php      } ?>
                 <br />
                
         </div>
              
-            <div class="col-md-3" style="background-color:#17202A;">
+            <div class="col-md-3" style="">
                 <h3 style="text-align: center; font-family:Lucida Console, Monaco, monospace; font-size: 1.5em; color: #F1C40F;">
                     FRIENDS
                 </h3>  
                 <?php
-                $uid=$_SESSION['id'];
-                $sel="Select name, year,image from users inner join users_friends on users.id=users_friends.friend_id  where users_friends.user_id='$uid'";
-                $selres=mysqli_query($con,$sel) or diemysqli_error($con);
+                $id=$_GET['id'];
+                $sel="Select name, year,image from users inner join users_friends on users.id=users_friends.friend_id  where users_friends.user_id=?";
+                 if ($stmt->prepare($sel)) {
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+                 
+                $stmt->store_result();
+                $stmt->bind_result($name,$year,$image);}
+               
                 ?>
                 <table class="table ">
                 <?php    
-                while ($arr= mysqli_fetch_array($selres)){
+                while ($stmt->fetch()){
                 ?>
                     <tr>
                        
                             <td>
                          <?php 
-                         $img=$arr['image'];
+                         $img=$image;
                          echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
                         
                         </td>
                         <td >
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $arr[0]; ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $name; ?></h3>
                         </td>
                         <td>
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $arr[1]; ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $year; ?></h3>
                         </td>
                     </tr>
                <?php } ?>
                 </table>
                 <?php
-                $uid=$_GET['id'];
-                $sel="Select name, year,image from users inner join users_friends on users.id=users_friends.user_id  where users_friends.friend_id='$uid'";
-                $selres=mysqli_query($con,$sel) or diemysqli_error($con);
+                $id=$_GET['id'];
+                $sel="Select name, year,image from users inner join users_friends on users.id=users_friends.user_id  where users_friends.friend_id=?";
+                 if ($stmt->prepare($sel)) {
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+                 
+                 $stmt->store_result();
+                 $stmt->bind_result($name,$year,$image);
+                 }
                 ?>
                 
                 <table class="table" >
                 <?php    
-                while ($arr= mysqli_fetch_array($selres)){
+                while ($stmt->fetch()){
                 ?>
                     <tr>
                         <td>
                          <?php 
-                         $img=$arr['image'];
+                         $img=$image;
                          echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
                         </td>
                         <td >
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $arr[0]; ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $name; ?></h3>
                         </td>
                         <td>
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $arr[1]; ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #F1C40F;"><?php echo $year; ?></h3>
                         </td>
                     </tr>
                <?php } ?>

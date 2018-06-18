@@ -1,6 +1,7 @@
 <?php
 
 require 'includes/common.php';
+if(isset($_SESSION['id'])){
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -60,24 +61,38 @@ require 'includes/common.php';
 </head>
 <body>
 <?php include 'includes/header.php'; ?>
-
+ 
 <div class="container">
 <?php
 $uid=$_SESSION['id'];
-if(isset($_SESSION['id'])){
-$friendid=$_GET['id'];}
-$sel1="Select name,image from users where id='$friendid'";
-$selres1=mysqli_query($con,$sel1) or diemysqli_error($con);
-$arr1=mysqli_fetch_array($selres1);
+$s="Not Seen";
+$friendid=$_GET['id'];
+
+$sel1="Select name,image from users where id=?";
+$stmt=$con->stmt_init();
+if($stmt->prepare($sel1)){
+$stmt->bind_param('i',$friendid);
+$stmt->execute();
+$stmt->store_result();
+$stmt->bind_result($name,$image);}
+$stmt->fetch();
 ?>
-    <h2 style="font-family:Times New Roman, Times, serif; font-size: 3em; text-align: center;"><?php echo $arr1[0]; ?></h2>
+    <h2 style="font-family:Times New Roman, Times, serif; font-size: 3em; text-align: center;"><?php echo $name; ?></h2>
     <?php
-$sel="Select message,time,from_id,to_id from messages where (from_id='$uid' and to_id='$friendid') or (from_id='$friendid' and to_id='$uid') order by time asc";
-$selres=mysqli_query($con,$sel) or diemysqli_error($con);
-while($arr=mysqli_fetch_array($selres)){
+$sel="Select id,message,time,from_id,to_id from messages where (from_id=? and to_id=?) or (from_id=? and to_id=?) order by id asc";
+$stmt1=$con->stmt_init();
+if($stmt1->prepare($sel)){
+$stmt1->bind_param('iiii',$uid,$friendid,$friendid,$uid);
+$stmt1->execute();
+$stmt1->store_result();
+$stmt1->bind_result($mid,$message,$time,$from_id,$to_id);
+}
+
+
+while($stmt1->fetch()){
     
 
-if($arr['from_id']==$uid){
+if($from_id==$uid){
 ?>    
     <div class="container" style="background-color:#CB4335 ;">
 <span id='time-right'>
@@ -91,22 +106,41 @@ echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> 
                 ?>
                         
   <h3 style="color:#F1C40F; font-size: 1.2em; "><b>YOU</b></h3>
-  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em; color:black;"><?php echo $arr['message']; ?></p>
+  
 </span>
-        <span id="time-right" style="color:black;"><?php echo $arr['time']; ?></span>
+  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em; color:black;"><?php echo $message; ?></p>
+        <span id="time-right" style="color:black;"><?php echo $time; ?></span>
+        <?php
+        $upd1="Update messages set viewed_from=1 where  (from_id=? and to_id=?)";
+	$stmt=$con->prepare($upd1);
+	$stmt->bind_param("ii",$friendid,$uid);
+	$stmt->execute();
+  
+  $se1="Select viewed_from from messages where id='$mid'";
+  $sere1=mysqli_query($con,$se1) or diemysqli_error($con);
+  $row=mysqli_fetch_array($sere1);
+  if($row['viewed_from']==1){ ?>
+  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1em; color:black;"> <?php
+  echo "Seen";?></p> <?php }
+  else{
+      ?> <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1em; color:black;"><?php echo "Not Seen";?></p><?php }
+         
+        ?>
 </div>
 <?php } else {
     ?><div class="container darker" style="background-color: #F1C40F;">
     <span id='time-left'>
     <?php
-    $image_path1=$arr1[1];
+   
+    $image_path1=$image;
 echo "<img src='$image_path1' height='50px' width='50px' class='img-circle' ; /> "
     ?>
     
   
-  <h3 style="color:#E74C3C; font-size: 1.2em;"><b><?php echo $arr1[0]; ?></b></h3>
-  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em;color:black;"><?php echo $arr['message']; ?></p></span>
-  <span id="time-left" style='color:black;'><?php echo $arr['time']; ?></span>
+  <h3 style="color:#E74C3C; font-size: 1.2em;"><b><?php echo $name; ?></b></h3>
+ </span>
+  <p style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7em;color:black;text-align:right;"><?php echo $message; ?></p>
+  <span id="time-left" style='color:black;'><?php echo $time; ?></span>
 </div>
 <?php } } ?>
 <form class="form-group" method="POST" action="message_script.php?id=<?php echo $friendid; ?>">
@@ -119,3 +153,8 @@ echo "<img src='$image_path1' height='50px' width='50px' class='img-circle' ; />
 </div>
 </body>
 </html>
+<?php }
+else{
+    header("Location:index.php");
+}
+?>

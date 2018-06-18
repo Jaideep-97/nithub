@@ -1,6 +1,7 @@
 <?php
 
 require 'includes/common.php';
+if(isset($_SESSION['id'])){
 ?>
 <html>
     <head>
@@ -23,12 +24,12 @@ require 'includes/common.php';
         ?>
         <div class="container">
             <h1 style="text-align:center; font-family:Georgia, serif;color: #F1C40F;">ADD OR REMOVE FRIENDS</h1>
-            <div class="col-md-3">
-                <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F;"><b>1st Year Members</b></h2>
+            <div class="col-md-6">
+                <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F; text-align: center;"><b>1st Year Members</b></h2>
                 <table class="table table-hover">
              <?php
              $uid=$_SESSION['id'];
-             $sel="Select name from users where year='1' and id<>'$uid'";
+             $sel="Select name from users where year='1' and id<>'$uid' order by name";
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
@@ -61,12 +62,13 @@ require 'includes/common.php';
               ?>
                 </table>
             </div>
-<div class="col-md-3">
-    <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F;"><b>2nd Year Members</b></h2>
+            
+<div class="col-md-6">
+    <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F; text-align: center;"><b>2nd Year Members</b></h2>
                 <table class="table table-hover">
              <?php
              $uid=$_SESSION['id'];
-             $sel="Select name from users where year='2' and id<>'$uid'";
+             $sel="Select name from users where year='2' and id<>'$uid' order by name";
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
@@ -99,12 +101,12 @@ require 'includes/common.php';
               ?>
                 </table>
             </div>
-            <div class="col-md-3">
-                <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F;"><b>3rd Year Members</b></h2>
+            <div class="col-md-6">
+                <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F;text-align: center;"><b>3rd Year Members</b></h2>
                 <table class="table table-hover" cellspacing='50'>
              <?php
              $uid=$_SESSION['id'];
-             $sel="Select name from users where year='3' and id<>'$uid'";
+             $sel="Select name from users where year='3' and id<>'$uid' order by name";
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
@@ -137,12 +139,12 @@ require 'includes/common.php';
               ?>
                 </table>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <table class="table table-hover" cellspacig='50'>
-                    <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F;"><b>4th Year Members</b></h2>
+                    <h2 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em;color: #F1C40F;text-align: center;"><b>4th Year Members</b></h2>
              <?php
              $uid=$_SESSION['id'];
-             $sel="Select name from users where year='4' and id<>'$uid'";
+             $sel="Select name from users where year='4' and id<>'$uid' order by name";
              $selres=mysqli_query($con,$sel) or diemysqli_error($con);
              while($arr=mysqli_fetch_array($selres)) {
              $nm=$arr['name'];
@@ -179,4 +181,8 @@ require 'includes/common.php';
         </div>
     </body>
 </html>
-                
+ <?php }
+else{
+    header("Location:index.php");
+}
+?>               

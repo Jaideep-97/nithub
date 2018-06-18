@@ -1,6 +1,7 @@
 <?php
 
 require 'includes/common.php';
+if(isset($_SESSION['id'])){
 ?>
 <html>
     <head>
@@ -28,7 +29,7 @@ require 'includes/common.php';
         include 'ifliked.php';
         ?>
         <div class="container-fluid">
-            <div class="col-md-2" style="background-color:#17202A;">
+            <div class="col-md-2" style="">
                 <h2 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">YOUR PROFILE</h2>
               <?php
               $uid=$_SESSION['id'];
@@ -37,7 +38,7 @@ require 'includes/common.php';
                 $arr= mysqli_fetch_array($selres);
                 ?>
                 <h3 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:2em; color: #F1C40F;"><?php echo $arr[2]; ?></h3>
-              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;"><?php echo $arr[1]; ?></h4>
+              
              
               <form action="upload-handle.php" method="post" enctype="multipart/form-data">
                   <input type="file" name="file" value='Choose file:' class="btn btn-danger">
@@ -53,20 +54,25 @@ $image_path=$arr1['image'];
 echo "<img src='$image_path' height='200px' width='200px' class='img-circle' ; /> "
                 ?>
               <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Year:<?php echo $arr[4]; ?></h4>
-              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Clubs:<?php echo $arr[6]; ?></h4>
-              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Branch:<?php echo $arr[7]; ?></h4>
+              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Clubs:<?php echo $arr[7]; ?></h4>
+              <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">Branch:<?php echo $arr[6]; ?></h4>
               <h4 style="font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size:1.2em; color: #F1C40F;">About:<?php echo $arr[8]; ?></h4>
               
             </div>
-            <div class="col-md-7" style="background-color:#D7DBDD;" >
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-6" style="background-color:#D7DBDD;" >
+          
                 <h4 style="text-align: center;">
                     <b style="font-family:Lucida Console, Monaco, monospace; font-size: 1.5em;color: #CB4335;">  POST YOUR STORY</b>
                 </h4>  
-                <form class="form-group" method="POST" action="post.php">
+                <form class="form-group" method="POST" action="post.php" >
                     <input type="textarea" name="text" placeholder="Write your post here" class="form-control" />
                     <br />
-                    <input class="btn btn-danger" value="POST" type="submit" />
+                 <input class="btn btn-danger" value="POST" type="submit" />   
                 </form>
+                
+                
                 <?php
                 $uid=$_SESSION['id'];
                 $sel="Select * from posts where userid='$uid' order by time desc";
@@ -139,7 +145,7 @@ echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> 
                
         </div>
              
-            <div class="col-md-3" style="background-color:#17202A;">
+            <div class="col-md-3" style="">
                 <h3 style="text-align: center; font-family:Lucida Console, Monaco, monospace; font-size: 1.5em; color: #F1C40F;">
                     FRIENDS
                 </h3>  
@@ -168,10 +174,10 @@ echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> 
                         </td>
                         <td >
                             <?php if($arr[2]==1) { ?>
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #28B463;"><?php echo $on; ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #28B463;"><b><?php echo $on; ?></b></h3>
                         
                             <?php } else { ?>
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #CB4335  ;"><?php echo $off;   } ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #CB4335  ;"><b><?php echo $off;   } ?></b></h3>
                         </td>
                     </tr>
                <?php } ?>
@@ -200,10 +206,10 @@ echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> 
                         </td>
                          <td >
                             <?php if($arr[2]==1) { ?>
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #28B463;"><?php echo $on;  ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #28B463;"><b><?php echo $on;  ?></b></h3>
                        
                 <?php } else { ?>
-                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #CB4335  ;"><?php echo $off;   } ?></h3>
+                            <h3 style="font-family:Lucida Console, Monaco, monospace; font-size: 1.2em; color: #CB4335  ;"><b><?php echo $off;   } ?></b></h3>
                         </td>
                     </tr>
                <?php } ?>
@@ -215,3 +221,8 @@ echo "<img src='$image_path' height='50px' width='50px' class='img-circle' ; /> 
         </div>
     </body>
 </html>
+<?php }
+else{
+    header("Location:index.php");
+}
+?>

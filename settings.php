@@ -1,4 +1,5 @@
 <?php require 'includes/common.php';
+if(isset($_SESSION['id'])){
 ?>
 <head>
   <meta charset="utf-8">
@@ -260,23 +261,29 @@ input {
 <body>
     <?php
     include 'includes/header.php';
+    
     $uid=$_SESSION['id'];
     $sel="Select * from users where id='$uid'";
     $selres=mysqli_query($con,$sel) or diemysqli_error($con);
     $arr=mysqli_fetch_array($selres);
     ?>
     
-    <form class="sign-up" method="POST" action="settings_script.php" class="form-group">
+    <form class="sign-up" method="POST" action="<?php echo htmlspecialchars('settings_script.php'); ?>" class="form-group">
     <h1 class="sign-up-title">Change settings!</h1>
-    <input type="text" class="sign-up-input" name="name" class="col-md-4" value="<?php echo $arr[2]; ?>"  autofocus>
-    <input type="text" class="sign-up-input" name="email" class="col-md-4" value="<?php echo $arr[1]; ?>" autofocus>
-    <input type="password" class="sign-up-input" name="password" class="col-md-4" value="<?php echo $arr[3]; ?>" >
-    <input type="text" class="sign-up-input" name="year" class="col-md-4" value="<?php echo $arr[4]; ?>" >
-     <input type="text" class="sign-up-input" name="club" class="col-md-4" value="<?php echo $arr[6]; ?>" >
-      <input type="text" class="sign-up-input" name="branch" class="col-md-4" value="<?php echo $arr[7]; ?>" >
-       <input type="text" class="sign-up-input" name="about" class="col-md-4" value="<?php echo $arr[8]; ?>" >
+    <input type="text" class="sign-up-input" name="name" class="col-md-4" value="<?php echo $arr[2]; ?>"  required autofocus>
+    <input type="text" class="sign-up-input" name="email" class="col-md-4" value="<?php echo $arr[1]; ?>" required autofocus>
+    <input type="password" class="sign-up-input" name="password" class="col-md-4" value="<?php echo $arr[3]; ?>" required>
+    <input type="text" class="sign-up-input" name="year" class="col-md-4" value="<?php echo $arr[4]; ?>" required>
+    <input type="text" class="sign-up-input" name="club" class="col-md-4" value="<?php echo $arr[6]; ?>" required>
+    <input type="text" class="sign-up-input" name="branch" class="col-md-4" value="<?php echo $arr[7]; ?>" required>
+    <input type="text" class="sign-up-input" name="about" class="col-md-4" value="<?php echo $arr[8]; ?>" required>
     <input type="submit" value="Change settings!" class="sign-up-button">
   </form>
    
 </body>
 </html>
+<?php }
+else{
+    header("Location:index.php");
+}
+?>

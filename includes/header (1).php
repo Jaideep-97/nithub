@@ -8,6 +8,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
       body{
+          background-image: url(img4.jpg);
+          background-size: cover;
           background-color:#17202A;
       }
       .caption{
@@ -24,7 +26,8 @@
     </head>
     <body>
         <?php
-        // put your code here
+        
+        
         ?>
            <nav class="navbar navbar-inverse" style='background-color:#CB4335 ;color:#17202A  ;'>
             <div class="container-fluid">
@@ -36,8 +39,13 @@
                       <?php } ?>
             </div>
                 <ul class="nav navbar-nav">
-              <?php      if (isset($_SESSION['email'])) {                     ?> 
-                    <li style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif ; font-size: 1.2em; color:#FDFEFE  ;"><a href="members1.php"><b>MESSAGE FRIENDS</b></a></li>
+              <?php      if (isset($_SESSION['email'])) {       
+                  $uid=$_SESSION['id'];
+        $sel="Select COUNT(viewed_from) from messages where to_id='$uid' and viewed_from=0";
+        $selres=mysqli_query($con,$sel) or diemysqli_error($con);
+        $arr=mysqli_fetch_array($selres);
+                  ?> 
+                    <li style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif ; font-size: 1.2em; color:#FDFEFE  ;"><a href="members1.php"><b>MESSAGE FRIENDS(<?php echo $arr[0]; ?>)</b></a></li>
                     <li style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif ; font-size: 1.2em;color:#FDFEFE  ; "><a href="members.php"><b>MEMBERS</b></a></li>
               <?php } else { ?>
                      <li style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif ; font-size: 1.2em; color:#FDFEFE  ;"><a href="login.php"><b>MESSAGE FRIENDS</b></a></li>

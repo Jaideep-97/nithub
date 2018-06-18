@@ -8,30 +8,39 @@ $year = mysqli_real_escape_string($con, $_POST['year']);
 $club= mysqli_real_escape_string($con, $_POST['clubs']);
 $branch = mysqli_real_escape_string($con, $_POST['branch']);
 $about = mysqli_real_escape_string($con, $_POST['aboutme']);
-$select_query="Select id from users where email='$email'";
-$select_query_res=mysqli_query($con,$select_query) or die(mysqli_error($con));
-$no_of_rows=mysqli_num_rows($select_query_res);
-if($no_of_rows>0)
+$stmt1 = $con->prepare('SELECT id FROM users WHERE email = ?');
+$stmt1->bind_param('s', $email); // 's' specifies the variable type => 'string'
+$password=md5($password);
+$stmt1->execute();
+$stmt1->store_result();
+$result = $stmt1->bind_result($id);
+
+
+$row = $stmt1->num_rows;
+   
+if($row>0)
 {
     echo "<h2>Email id already exists. Try a different one</h2>";
 }
 else
 {
-    $insert="Insert into users(email,name,password,year,club,branch,about) values ('$email','$name','$password','$year','$club','$branch','$about')";
-    $registered=mysqli_query($con,$insert) or die(mysqli_error($con));
-    echo "user successfully registered";
-    $id= mysqli_insert_id($con);
-    $row= mysqli_fetch_array($select_query_res);
-    $_SESSION['id']=$row[0];
-    $_SESSION['email']=$email;
-     $upd="Update users set status='1' where id='$uid'";
-    $updres=mysqli_query($con,$upd) or diemysqli_error($con);
+    if($stmt=$con->prepare("Insert into users(email,name,password,year,club,branch,about) values (?,?,?,?,?,?,?)")){
+    $stmt->bind_param("sssssss", $email,$name,$password,$year,$club,$branch,$about); // 's' specifies the variable type => 'string'
+
+$stmt->execute();
+
+$stmt->close();
     
-     if(isset($_SESSION['email']))
-{
-     header('Location:profile.php');
+    
+    
+    
+    header('Location:login.php');
+}    
 }
-}
+     
+     
+
+
 
 ?>
     

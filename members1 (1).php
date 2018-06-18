@@ -1,6 +1,7 @@
 <?php
 
 require 'includes/common.php';
+if(isset($_SESSION['id'])){
 ?>
 <html>
     <head>
@@ -54,6 +55,20 @@ require 'includes/common.php';
                  <td>      <input type='button' class="btn btn-danger" value="Message" onclick="location.href='message.php?id=<?php echo $arr1[0]; ?>'" />
                  
                  </td>
+                 <td>
+                 <?php
+                 $nm1=$arr['name'];
+                 $s="Select id from users where name='$nm1'";
+                 $res=mysqli_query($con,$s) or diemysqli_error($con);
+                 $arr2=mysqli_fetch_array($res);
+                 $friendid=$arr1[0];
+  $se1="Select COUNT(viewed_from)  from messages where (from_id='$friendid' and to_id='$uid') and viewed_from=0 ";
+  $sere1=mysqli_query($con,$se1) or diemysqli_error($con);
+  $row=mysqli_fetch_array($sere1);
+  
+      echo "<p style='font-family: Arial, Helvetica, sans-serif; font-size: 1.2em; color:#F1C40F;'>$row[0] Unread Messages</p>";
+       ?>
+                 </td>    
                  
                      
              </tr>
@@ -82,15 +97,29 @@ require 'includes/common.php';
                          echo "<img src='$img' height='50px' width='50px' class='img-circle' ; /> " ?>
                         </td>
 
-                 <td class='col-md-8'>
+                 <td >
                      <h4><a href="profile1.php?id=<?php echo $ar1[0] ; ?> "><?php echo $ar['name']; ?></a></h4></td>
                  
                  
                 
-                 <td class='col-md-4'>      <input type='button' class="btn btn-danger" value="Message" onclick="location.href='message.php?id=<?php echo $ar1[0]; ?>'" />
+                 <td>      <input type='button' class="btn btn-danger" value="Message" onclick="location.href='message.php?id=<?php echo $ar1[0]; ?>'" />
                  
                  </td>
+                   <td>
+                 <?php
+                  $nm1=$ar['name'];
+                 $s="Select id from users where name='$nm1'";
+                 $res=mysqli_query($con,$s) or diemysqli_error($con);
+                 $arr2=mysqli_fetch_array($res);
+                 $friendid=$ar1[0];
                  
+  $se1="Select COUNT(viewed_from) from messages where (from_id='$friendid' and to_id='$uid') and viewed_from=0";
+  $sere1=mysqli_query($con,$se1) or diemysqli_error($con);
+  $row=mysqli_fetch_array($sere1);
+      echo "<p style='font-family: Arial, Helvetica, sans-serif; font-size: 1.2em; color:#F1C40F;'>$row[0] Unread Messages</p>";
+       
+      ?>
+                 </td>    
                      
              </tr>
              <?php } }
@@ -129,7 +158,20 @@ require 'includes/common.php';
                  <td>      <input type='button' class="btn btn-danger" value="Message" onclick="location.href='message.php?id=<?php echo $arr1[0]; ?>'" />
                  
                  </td>
-                 
+                 <td>
+                 <?php
+                 $nm1=$arr['name'];
+                 $s="Select id from users where name='$nm1'";
+                 $res=mysqli_query($con,$s) or diemysqli_error($con);
+                 $arr2=mysqli_fetch_array($res);
+                 $friendid=$arr1[0];
+  $se1="Select COUNT(viewed_from)  from messages where (from_id='$friendid' and to_id='$uid') and viewed_from=0 ";
+  $sere1=mysqli_query($con,$se1) or diemysqli_error($con);
+  $row=mysqli_fetch_array($sere1);
+  
+      echo "<p style='font-family: Arial, Helvetica, sans-serif; font-size: 1.2em; color:#F1C40F;'>$row[0] Unread Messages</p>";
+       ?>
+                 </td>    
                      
              </tr>
              <?php }
@@ -165,6 +207,21 @@ require 'includes/common.php';
                  <td>      <input type='button' class="btn btn-danger" value="Message" onclick="location.href='message.php?id=<?php echo $ar1[0]; ?>'" />
                  
                  </td>
+                 <td>
+                 <?php
+                  $nm1=$ar['name'];
+                 $s="Select id from users where name='$nm1'";
+                 $res=mysqli_query($con,$s) or diemysqli_error($con);
+                 $arr2=mysqli_fetch_array($res);
+                 $friendid=$ar1[0];
+                 
+  $se1="Select COUNT(viewed_from) from messages where (from_id='$friendid' and to_id='$uid') and viewed_from=0";
+  $sere1=mysqli_query($con,$se1) or diemysqli_error($con);
+  $row=mysqli_fetch_array($sere1);
+      echo "<p style='font-family: Arial, Helvetica, sans-serif; font-size: 1.2em; color:#F1C40F;'>$row[0] Unread Messages</p>";
+       
+      ?>
+                 </td>    
                  
                      
              </tr>
@@ -178,4 +235,8 @@ require 'includes/common.php';
         </div>
     </body>
 </html>
-                
+   <?php }
+else{
+    header("Location:index.php");
+}
+?>             

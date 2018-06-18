@@ -258,12 +258,15 @@ input {
 <body>
     <?php
     include 'includes/header.php';
+   include 'login_script.php';
     ?>
-    <form class="sign-up" method="POST" action="login_script.php" class="form-group">
+    <form class="sign-up" method="POST" action="<?php echo htmlspecialchars('login_script.php'); ?>" class="form-group">
     <h1 class="sign-up-title">Log in Here!</h1>
     
-    <input type="text" class="sign-up-input" class="col-md-4" name="email" placeholder="What's your email?" autofocus>
-    <input type="password" class="sign-up-input" class="col-md-4" name="password" placeholder="Choose a password" >
+    <input type="text" class="sign-up-input" class="col-md-4" name="email" placeholder="What's your email?*" required autofocus>
+   
+    <input type="password" class="sign-up-input" class="col-md-4" name="password" placeholder="Enter your password*"  required>
+   
     <input type="submit" name="submit" value="Log in now!" class="sign-up-button">
   </form>
   

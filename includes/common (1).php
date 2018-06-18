@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-$con = mysqli_connect("localhost", "root", "", "social") or die(mysqli_error($con));
+$con = mysqli_connect("localhost", "connectf_jaideep","Durgapur12","connectf_social") ;
 session_start();
 
 ?>
